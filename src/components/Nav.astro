@@ -249,6 +249,16 @@ const t = content[lang].nav;
         component.querySelectorAll("[data-nav-link]").forEach((link) => {
           link.addEventListener("click", closeMenu);
         });
+
+        // Closing on scroll matters most on mobile, where the open menu
+        // covers the page — scrolling clearly means "done with the menu".
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (menu.classList.contains("is-active")) closeMenu();
+          },
+          { passive: true }
+        );
       });
     });
   </script>

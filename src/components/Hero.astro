@@ -17,6 +17,17 @@ const t = content[lang].hero;
       padding-top: var(--_spacing---section-space--page-top);
     }
 
+    /* .hero_wrap sits above .hero_contain (the size query container), so
+       it can't read the --_responsive---medium keyword vars — a plain
+       media query is the only option for trimming its own padding. This
+       is what keeps the house illustration inside the first mobile
+       screen instead of needing a scroll to see it. */
+    @media (max-width: 50em) {
+      .hero_wrap {
+        padding-top: 5rem;
+      }
+    }
+
     .hero_glow_wrap {
       position: absolute;
       inset: 0;
@@ -95,19 +106,26 @@ const t = content[lang].hero;
       display: flex;
       max-width: 17ch;
       margin-bottom: var(--_text-style---margin-bottom);
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: var(--_typography---font--primary-extrabold);
       letter-spacing: var(--_typography---letter-spacing--tight);
     }
 
     @container (width < 50em) {
       .hero_title {
-        font-size: 1.875rem;
+        font-size: 2.25rem;
       }
     }
 
     .hero_title_line {
       display: block;
+    }
+
+    /* Second line reads as a subtitle, not a second headline — sized off
+       the (already responsive) parent font-size so it shrinks with it. */
+    .hero_title_line_sub {
+      font-size: 0.55em;
+      font-weight: var(--_typography---font--primary-medium);
     }
 
     .hero_text {
@@ -148,6 +166,19 @@ const t = content[lang].hero;
       background-color: color-mix(in hsl, var(--_theme---button-secondary--background) calc(100% * var(--_trigger---on)), var(--_theme---button-secondary--background-hover) calc(100% * var(--_trigger---off)));
       color: color-mix(in hsl, var(--_theme---button-secondary--text) calc(100% * var(--_trigger---on)), var(--_theme---button-secondary--text-hover) calc(100% * var(--_trigger---off)));
       border-color: color-mix(in hsl, var(--_theme---button-secondary--border) calc(100% * var(--_trigger---on)), var(--_theme---button-secondary--border-hover) calc(100% * var(--_trigger---off)));
+    }
+
+    /* Both CTAs stay on one row on mobile instead of stacking full-width —
+       shrinking padding/font is enough since the labels are short. */
+    @container (width < 50em) {
+      .hero_button_wrap,
+      .hero_button_secondary_wrap {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 0;
+        padding: var(--_spacing---space--2) var(--_spacing---space--3);
+        font-size: 0.8125rem;
+      }
     }
 
     .hero_list_wrap {
@@ -479,7 +510,7 @@ const t = content[lang].hero;
         </div>
 
         <div class="hero_title u-heading u-text-style-h1">
-          <h1><span class="hero_title_line">{t.titleLine1}</span><span class="hero_title_line">{t.titleLine2}</span></h1>
+          <h1><span class="hero_title_line">{t.titleLine1}</span><span class="hero_title_line hero_title_line_sub">{t.titleLine2}</span></h1>
         </div>
 
         <div class="hero_text u-text u-text-style-large">
