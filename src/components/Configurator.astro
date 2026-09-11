@@ -35,7 +35,6 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
   id="quote"
   class="configurator_wrap u-section u-theme-dark"
   data-summary-labels={JSON.stringify(t.summaryLabels)}
-  data-produkt-options={JSON.stringify(produktOptions)}
 >
   <style>
     .configurator_content {
@@ -444,44 +443,6 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
       }
     }
 
-    /* Detail card: fades/slides in beside the house once a product is
-       picked (see showDetail() in the script; animates via the Tailwind
-       transition-all class already on this element). */
-    .configurator_detail_wrap {
-      background-color: var(--_theme---background);
-      color: var(--_theme---text);
-      border: var(--border-width--main) solid var(--_theme---border);
-      opacity: 0;
-      transform: translateY(0.75rem);
-      pointer-events: none;
-    }
-
-    .configurator_detail_icon_wrap {
-      background-color: var(--_theme---accent);
-      color: var(--_theme---accent-text);
-    }
-
-    .configurator_detail_svg {
-      fill: none;
-    }
-
-    .configurator_detail_path {
-      stroke: currentColor;
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .configurator_detail_text {
-      color: color-mix(in hsl, currentColor 70%, transparent);
-    }
-
-    .configurator_detail_cta {
-      background-color: color-mix(in hsl, var(--_theme---button-primary--background) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--background-hover) calc(100% * var(--_trigger---off)));
-      color: color-mix(in hsl, var(--_theme---button-primary--text) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--text-hover) calc(100% * var(--_trigger---off)));
-      box-shadow: 0 0 calc(0.75rem + 0.75rem * var(--_trigger---on)) var(--_theme---accent-glow);
-    }
-
     @container (width < 50em) {
       .configurator_panel_wrap,
       .configurator_visual_wrap {
@@ -693,30 +654,6 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
               <line class="configurator_target_seam" data-draw x1="191" y1="147" x2="253" y2="147" />
             </g>
           </svg>
-
-          <div
-            class="configurator_detail_wrap absolute bottom-4 left-4 right-4 flex flex-col gap-3 rounded-xl p-4 transition-all duration-300"
-            data-detail-card
-          >
-            <div class="flex items-center gap-4">
-              <div class="configurator_detail_icon_wrap flex h-11 w-11 shrink-0 items-center justify-center rounded-lg">
-                <svg class="configurator_detail_svg h-6 w-6" viewBox="0 0 24 24" aria-hidden="true">
-                  <path class="configurator_detail_path" data-detail-icon-path d="" />
-                </svg>
-              </div>
-              <div class="flex min-w-0 flex-col gap-0.5">
-                <div class="configurator_detail_title font-medium" data-detail-title></div>
-                <div class="configurator_detail_text text-sm" data-detail-text></div>
-              </div>
-            </div>
-            <a
-              class="configurator_detail_cta inline-flex w-fit items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300"
-              href="#contact"
-              data-trigger="hover focus"
-            >
-              {t.detailCta}
-            </a>
-          </div>
         </div>
        </div>
       </div>
@@ -731,7 +668,6 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
         component.dataset.scriptInitialized = "true";
 
         const summaryLabels = JSON.parse(component.dataset.summaryLabels ?? "{}");
-        const produktOptions = JSON.parse(component.dataset.produktOptions ?? "[]");
 
         const panelWrap = component.querySelector(".configurator_panel_wrap");
         const panels = component.querySelectorAll(".configurator_panel");
@@ -781,42 +717,11 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
           drawObserver.observe(houseSvg);
         }
 
-        // --- Detail card: fades in beside the house for the picked product ---
-        const detailCard = component.querySelector("[data-detail-card]");
-        const detailTitle = component.querySelector("[data-detail-title]");
-        const detailText = component.querySelector("[data-detail-text]");
-        const detailIconPath = component.querySelector("[data-detail-icon-path]");
-
-        // Both boxes can be picked at once (e.g. someone needs the garage
-        // door and the gate done together), so ids/labels are small arrays.
-        const showDetail = (ids) => {
-          const picked = produktOptions.filter((item) => ids.includes(item.id));
-          if (!picked.length || !(detailCard instanceof HTMLElement)) return;
-          if (detailTitle) detailTitle.textContent = picked.map((item) => item.value).join(" + ");
-          if (detailText) detailText.textContent = picked.map((item) => item.text).join(" ");
-          if (detailIconPath) detailIconPath.setAttribute("d", picked[0].path);
-          detailCard.style.opacity = "1";
-          detailCard.style.transform = "translateY(0)";
-          detailCard.style.pointerEvents = "auto";
-        };
-
-        const hideDetail = () => {
-          if (!(detailCard instanceof HTMLElement)) return;
-          detailCard.style.opacity = "0";
-          detailCard.style.transform = "translateY(0.75rem)";
-          detailCard.style.pointerEvents = "none";
-        };
-
         const highlightTargets = (ids) => {
           targets.forEach((target) => {
             target.classList.toggle("is-active", ids.includes(target.id));
           });
           if (houseSvg) houseSvg.classList.toggle("has-active", ids.length > 0);
-          if (ids.length > 0) {
-            showDetail(ids);
-          } else {
-            hideDetail();
-          }
         };
 
         // Plain buttons instead of hidden radio/checkbox inputs: a click
