@@ -234,17 +234,27 @@ const t = content[lang].nav;
 
         const toggle = component.querySelector("[data-nav-toggle]");
         const menu = component.querySelector("[data-nav-menu]");
+        // Reaches outside the component on purpose: the scrim has to live
+        // outside .nav_wrap so its own backdrop-filter doesn't turn it
+        // into the scrim's containing block (see the comment by its CSS).
+        const scrim = document.querySelector("[data-nav-scrim]");
         if (!(toggle instanceof HTMLElement) || !(menu instanceof HTMLElement)) return;
 
         const closeMenu = () => {
           menu.classList.remove("is-active");
           toggle.setAttribute("aria-expanded", "false");
+          if (scrim instanceof HTMLElement) scrim.classList.remove("is-active");
         };
 
         toggle.addEventListener("click", () => {
           const isActive = menu.classList.toggle("is-active");
           toggle.setAttribute("aria-expanded", String(isActive));
+          if (scrim instanceof HTMLElement) scrim.classList.toggle("is-active", isActive);
         });
+
+        if (scrim instanceof HTMLElement) {
+          scrim.addEventListener("click", closeMenu);
+        }
 
         component.querySelectorAll("[data-nav-link]").forEach((link) => {
           link.addEventListener("click", closeMenu);
@@ -263,3 +273,25 @@ const t = content[lang].nav;
     });
   </script>
 </header>
+
+<!-- Outside .nav_wrap on purpose: .nav_wrap's own backdrop-filter makes
+     it a containing block for fixed-position descendants, which would
+     collapse this scrim to the header's own (tiny) height instead of
+     covering the viewport below it. -->
+<div class="nav_scrim" data-nav-scrim aria-hidden="true"></div>
+
+<style>
+  .nav_scrim {
+    display: none;
+    position: fixed;
+    inset: var(--nav--height-total) 0 0 0;
+    background-color: color-mix(in hsl, black 55%, transparent);
+    z-index: 90;
+  }
+
+  @media (max-width: 60em) {
+    .nav_scrim.is-active {
+      display: block;
+    }
+  }
+</style>
