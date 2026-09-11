@@ -58,6 +58,7 @@ const t = content[lang].hero;
 
     .hero_content {
       grid-column: 1 / span 6;
+      grid-row: 1;
       width: 100%;
       min-width: 0;
     }
@@ -150,6 +151,9 @@ const t = content[lang].hero;
     }
 
     .hero_list_wrap {
+      grid-column: 1 / span 6;
+      grid-row: 2;
+      width: 100%;
       display: flex;
       flex-wrap: wrap;
       gap: var(--_spacing---space--2);
@@ -164,6 +168,7 @@ const t = content[lang].hero;
 
     .hero_visual_wrap {
       grid-column: 7 / span 6;
+      grid-row: 1 / span 2;
       width: 100%;
       min-width: 0;
       /* aspect-ratio lives here, container-type lives one level down on
@@ -489,12 +494,6 @@ const t = content[lang].hero;
             {t.ctaSecondary}
           </a>
         </div>
-
-        <ul class="hero_list_wrap">
-          {t.services.map((service) => (
-            <li class="hero_list_item u-text-style-small">{service}</li>
-          ))}
-        </ul>
       </div>
 
       <div class="hero_visual_wrap">
@@ -675,6 +674,12 @@ const t = content[lang].hero;
         </div>
        </div>
       </div>
+
+      <ul class="hero_list_wrap">
+        {t.services.map((service) => (
+          <li class="hero_list_item u-text-style-small">{service}</li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>

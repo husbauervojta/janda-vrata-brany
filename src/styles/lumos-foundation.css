@@ -306,9 +306,16 @@ svg {
 
 /* Responsive keyword variables, redefined per container width tier.
    Only "medium" is implemented — extend with small/xsmall the same way
-   if a component needs a finer breakpoint. */
+   if a component needs a finer breakpoint.
+
+   IMPORTANT: an element can't be a size query container for its own
+   style rules — the browser looks past it to the next ancestor
+   container, which here doesn't exist, so the condition never matches
+   and every page silently stays stuck on the "large" desktop values.
+   The selector below targets descendants of .u-container (`*`), not
+   .u-container itself, so it actually reads .u-container's own size. */
 @container (width < 50em) {
-  .u-container {
+  .u-container * {
     --_responsive---large: 0;
     --_responsive---medium: 1;
     --flex-medium: flex;

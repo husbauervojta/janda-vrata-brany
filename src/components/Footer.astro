@@ -22,7 +22,7 @@ const year = new Date().getFullYear();
       padding-bottom: var(--_spacing---space--6);
     }
 
-    .footer_contain {
+    .footer_layout {
       display: flex;
       flex-direction: var(--column-medium, row);
       align-items: var(--start-medium, center);
@@ -40,8 +40,10 @@ const year = new Date().getFullYear();
   </style>
 
   <div class="footer_contain u-container">
-    <div class="footer_owner u-text-style-small">
-      {t.ownerName} &middot; {t.icoLabel}: {t.icoValue} &middot; {year} {t.rights}
+    <div class="footer_layout">
+      <div class="footer_owner u-text-style-small">
+        {t.ownerName} &middot; {t.icoLabel}: {t.icoValue} &middot; {year} {t.rights}
+      </div>
     </div>
   </div>
 </footer>
