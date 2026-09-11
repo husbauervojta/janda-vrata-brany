@@ -200,10 +200,10 @@ const t = content[lang].nav;
       </nav>
 
       <div class="nav_lang_wrap">
-        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "cs" }]} href="/">
+        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "cs" }]} href={import.meta.env.BASE_URL}>
           CS
         </a>
-        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "en" }]} href="/en/">
+        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "en" }]} href={`${import.meta.env.BASE_URL}en/`}>
           EN
         </a>
       </div>
