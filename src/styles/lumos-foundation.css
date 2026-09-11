@@ -32,6 +32,11 @@ ol {
 
 html {
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 body {

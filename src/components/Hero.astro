@@ -59,6 +59,7 @@ const t = content[lang].hero;
     .hero_content {
       grid-column: 1 / span 6;
       width: 100%;
+      min-width: 0;
     }
 
     .hero_tag_wrap {
@@ -164,9 +165,19 @@ const t = content[lang].hero;
     .hero_visual_wrap {
       grid-column: 7 / span 6;
       width: 100%;
-      container-type: inline-size;
+      min-width: 0;
+      /* aspect-ratio lives here, container-type lives one level down on
+         .hero_visual_cq — combining both on the same element collapses to
+         zero height on some mobile WebKit versions, since the only children
+         are position: absolute and can't imply a fallback height. */
       position: relative;
       aspect-ratio: 3 / 2;
+    }
+
+    .hero_visual_cq {
+      container-type: inline-size;
+      position: absolute;
+      inset: 0;
     }
 
     .hero_visual_inner {
@@ -487,6 +498,7 @@ const t = content[lang].hero;
       </div>
 
       <div class="hero_visual_wrap">
+       <div class="hero_visual_cq">
         <div class="hero_visual_inner">
           <svg class="hero_house_svg" viewBox="0 24 360 172" aria-hidden="true">
             <!-- Perspektivní skica od nároží. Každá hrana je vedená dvakrát až
@@ -661,6 +673,7 @@ const t = content[lang].hero;
             <div class="hero_status_text">{t.statusText}</div>
           </div>
         </div>
+       </div>
       </div>
     </div>
   </div>

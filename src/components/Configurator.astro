@@ -83,7 +83,7 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
 
     .configurator_layout {
       display: var(--flex-medium, grid);
-      flex-direction: column-reverse;
+      flex-direction: column;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       align-items: center;
       gap: var(--_spacing---space--8);
@@ -92,6 +92,7 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
     .configurator_panel_wrap {
       grid-column: 1 / span 6;
       width: 100%;
+      min-width: 0;
       padding: var(--_spacing---space--6);
       background-color: var(--_theme---background-2);
       border-radius: var(--radius--main);
@@ -343,9 +344,20 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
     .configurator_visual_wrap {
       grid-column: 7 / span 6;
       width: 100%;
-      container-type: inline-size;
+      min-width: 0;
+      /* aspect-ratio lives here, container-type lives one level down on
+         .configurator_visual_cq — combining both on the same element
+         collapses to zero height on some mobile WebKit versions, since the
+         only children are position: absolute and can't imply a fallback
+         height. */
       position: relative;
       aspect-ratio: 3 / 2;
+    }
+
+    .configurator_visual_cq {
+      container-type: inline-size;
+      position: absolute;
+      inset: 0;
     }
 
     .configurator_visual_inner {
@@ -626,6 +638,7 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
       </div>
 
       <div class="configurator_visual_wrap">
+       <div class="configurator_visual_cq">
         <div class="configurator_visual_inner">
           <svg class="configurator_house_svg" viewBox="0 0 320 190" role="img" aria-label={t.panelTitles[0]}>
             <line class="configurator_draw" data-draw x1="8" y1="164" x2="312" y2="164" />
@@ -705,6 +718,7 @@ const pohonOptions = t.pohonOptions.map((option, index) => ({ ...option, path: p
             </a>
           </div>
         </div>
+       </div>
       </div>
     </div>
   </div>
