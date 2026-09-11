@@ -1,0 +1,8 @@
+/*
+  Tailwind utilities only — no preflight. The rest of the site runs on its
+  own Lumos-style reset/typography (lumos-foundation.css); importing the
+  full Tailwind stack here would clobber that globally. Used only by the
+  house/product-picker part of Configurator.astro, at the user's request.
+*/
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);

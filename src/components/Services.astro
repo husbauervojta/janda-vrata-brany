@@ -1,0 +1,156 @@
+---
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].services;
+
+const paths = [
+  "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z M16.5 16.5 21 21",
+  "M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 1 5.4-5.4L14.7 12l-2.7-2.7Z",
+  "M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1 M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+  "M4 11 12 4l8 7 M6 10v10h12V10",
+  "M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z M9 7h6 M9 12h.01 M12 12h.01 M15 12h.01 M9 16h6",
+  "M7 4h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z M11 18h2",
+  "M4 20 20 4 M9 20h-5v-5 M15 4h5v5",
+];
+
+const services = t.items.map((item, index) => ({ ...item, path: paths[index] }));
+---
+
+<section id="services" class="services_wrap u-section u-theme-light">
+  <style>
+    .services_content {
+      max-width: var(--max-width--small);
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: var(--_spacing---space--8);
+    }
+
+    .services_title {
+      max-width: 20ch;
+      margin-bottom: var(--_text-style---margin-bottom);
+    }
+
+    .services_text {
+      max-width: 42ch;
+      color: color-mix(in hsl, currentColor 75%, transparent);
+    }
+
+    .services_grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--_spacing---space--5);
+    }
+
+    @container (width < 50em) {
+      .services_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @container (width < 35em) {
+      .services_grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+    }
+
+    .services_eyebrow_wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--_spacing---space--2);
+      margin-bottom: var(--_spacing---space--4);
+    }
+
+    .services_eyebrow_dot {
+      width: 0.4rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: var(--radius--round);
+      background-color: var(--_theme---accent);
+    }
+
+    .services_eyebrow_number {
+      color: var(--_theme---accent);
+      font-weight: var(--_typography---font--primary-bold);
+    }
+
+    .services_eyebrow_label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+
+    .services_card_wrap {
+      width: 100%;
+      padding: var(--_spacing---space--6);
+      background-color: var(--_theme---background-2);
+      color: var(--_theme---text);
+      border-radius: var(--radius--main);
+      border-style: solid;
+      border-width: var(--border-width--main);
+      border-color: color-mix(in hsl, var(--_theme---accent) calc(100% * var(--_trigger---on)), transparent calc(100% * var(--_trigger---off)));
+      transform: translateY(calc(-0.25rem * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .services_card_svg {
+      width: 2.5rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      margin-bottom: var(--_spacing---space--4);
+      fill: none;
+    }
+
+    .services_card_path {
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .services_card_title {
+      margin-bottom: var(--_spacing---space--2);
+    }
+
+    .services_card_text {
+      color: color-mix(in hsl, currentColor 75%, transparent);
+    }
+  </style>
+
+  <div class="services_contain u-container">
+    <div class="services_content u-margin-trim u-alignment-center" data-reveal>
+      <div class="services_eyebrow_wrap">
+        <div class="services_eyebrow_dot" aria-hidden="true"></div>
+        <div class="services_eyebrow_number u-text-style-small">{t.eyebrowNumber}</div>
+        <div class="services_eyebrow_label u-text-style-small">{t.eyebrowLabel}</div>
+      </div>
+      <div class="services_title u-heading u-text-style-h2">
+        <h2>{t.title}</h2>
+      </div>
+      <div class="services_text u-text u-text-style-main">
+        <p>{t.text}</p>
+      </div>
+    </div>
+
+    <div class="services_grid">
+      {services.map((service, index) => (
+        <div
+          class="services_card_wrap"
+          data-trigger="hover"
+          data-reveal
+          style={`--reveal-delay: ${(index % 3) * 90}ms`}
+        >
+          <svg class="services_card_svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="services_card_path" d={service.path} />
+          </svg>
+          <div class="services_card_title u-text-style-h5">{service.title}</div>
+          <div class="services_card_text u-text-style-small">{service.text}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].footer;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer_wrap u-theme-dark">
+  <style>
+    .footer_wrap {
+      background-color: var(--_theme---background);
+      color: var(--_theme---text);
+      border-top-style: solid;
+      border-top-width: var(--border-width--main);
+      border-color: var(--_theme---border);
+      padding-top: var(--_spacing---space--6);
+      padding-bottom: var(--_spacing---space--6);
+    }
+
+    .footer_contain {
+      display: flex;
+      flex-direction: var(--column-medium, row);
+      align-items: var(--start-medium, center);
+      justify-content: space-between;
+      gap: var(--_spacing---space--3);
+    }
+
+    .footer_owner {
+      color: color-mix(in hsl, currentColor 80%, transparent);
+    }
+
+    .footer_ico {
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+  </style>
+
+  <div class="footer_contain u-container">
+    <div class="footer_owner u-text-style-small">
+      {t.ownerName} &middot; {t.icoLabel}: {t.icoValue} &middot; {year} {t.rights}
+    </div>
+  </div>
+</footer>

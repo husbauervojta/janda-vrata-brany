@@ -1,0 +1,274 @@
+---
+// Placeholder contact details: replace with Petr's real phone/e-mail.
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].contact;
+const phoneHref = "tel:+420XXXXXXXXX";
+---
+
+<section id="contact" class="contact_wrap u-section u-theme-dark">
+  <style>
+    .contact_layout {
+      display: var(--flex-medium, grid);
+      flex-direction: column;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--_spacing---space--8);
+    }
+
+    .contact_content {
+      grid-column: 1 / span 5;
+      width: 100%;
+    }
+
+    .contact_eyebrow_wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--_spacing---space--2);
+      margin-bottom: var(--_spacing---space--4);
+    }
+
+    .contact_eyebrow_dot {
+      width: 0.4rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: var(--radius--round);
+      background-color: var(--_theme---accent);
+    }
+
+    .contact_eyebrow_number {
+      color: var(--_theme---accent);
+      font-weight: var(--_typography---font--primary-bold);
+    }
+
+    .contact_eyebrow_label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+
+    .contact_title {
+      max-width: 16ch;
+      margin-bottom: var(--_text-style---margin-bottom);
+    }
+
+    .contact_text {
+      max-width: 38ch;
+      margin-bottom: var(--_spacing---space--6);
+      color: color-mix(in hsl, currentColor 80%, transparent);
+    }
+
+    .contact_phone_wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--_spacing---space--3);
+      width: fit-content;
+      padding: var(--_spacing---space--3) var(--_spacing---space--5);
+      margin-bottom: var(--_spacing---space--4);
+      background-color: color-mix(in hsl, var(--_theme---button-primary--background) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--background-hover) calc(100% * var(--_trigger---off)));
+      color: color-mix(in hsl, var(--_theme---button-primary--text) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--text-hover) calc(100% * var(--_trigger---off)));
+      border-radius: var(--radius--small);
+      box-shadow: 0 0 calc(1.25rem + 1rem * var(--_trigger---on)) var(--_theme---accent-glow);
+      transform: translateY(calc(-0.125rem * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .contact_phone_svg {
+      width: 1.25rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      fill: none;
+    }
+
+    .contact_phone_path {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .contact_phone_text {
+      font-weight: var(--_typography---font--primary-medium);
+    }
+
+    .contact_email_wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--_spacing---space--2);
+      width: fit-content;
+      color: var(--_theme---text-link--text);
+      border-bottom-style: solid;
+      border-bottom-width: var(--border-width--main);
+      border-color: color-mix(in hsl, var(--_theme---text-link--border) calc(100% * var(--_trigger---off)), var(--_theme---text-link--border-hover) calc(100% * var(--_trigger---on)));
+    }
+
+    .contact_email_text {
+      color: color-mix(in hsl, var(--_theme---text-link--text) calc(100% * var(--_trigger---off)), var(--_theme---text-link--text-hover) calc(100% * var(--_trigger---on)));
+    }
+
+    .contact_form_wrap {
+      grid-column: 6 / span 7;
+      width: 100%;
+      padding: var(--_spacing---space--6);
+      background-color: var(--_theme---background-2);
+      border-radius: var(--radius--main);
+    }
+
+    .contact_field_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--_spacing---space--2);
+      margin-bottom: var(--_spacing---space--4);
+    }
+
+    .contact_field_label {
+      color: color-mix(in hsl, currentColor 75%, transparent);
+    }
+
+    .contact_field_input {
+      width: 100%;
+      padding: var(--_spacing---space--3) var(--_spacing---space--4);
+      background-color: var(--_theme---background);
+      color: var(--_theme---text);
+      border-radius: var(--radius--small);
+      border-style: solid;
+      border-width: var(--border-width--main);
+      border-color: var(--_theme---border);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .contact_field_input:focus-visible {
+      border-color: var(--_theme---accent);
+    }
+
+    .contact_submit_wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: var(--_spacing---space--3) var(--_spacing---space--5);
+      border-radius: var(--radius--small);
+      border-style: solid;
+      border-width: var(--border-width--main);
+      font-weight: var(--_typography---font--primary-medium);
+      background-color: color-mix(in hsl, var(--_theme---button-primary--background) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--background-hover) calc(100% * var(--_trigger---off)));
+      color: color-mix(in hsl, var(--_theme---button-primary--text) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--text-hover) calc(100% * var(--_trigger---off)));
+      border-color: color-mix(in hsl, var(--_theme---button-primary--border) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--border-hover) calc(100% * var(--_trigger---off)));
+      transform: translateY(calc(-0.125rem * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .contact_confirm_wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--_spacing---space--2);
+      padding: var(--_spacing---space--6) 0;
+    }
+
+    .contact_confirm_wrap.is-active {
+      display: flex;
+    }
+
+    .contact_confirm_title {
+      margin-bottom: var(--_spacing---space--1);
+    }
+
+    .contact_confirm_text {
+      max-width: 32ch;
+      color: color-mix(in hsl, currentColor 75%, transparent);
+    }
+
+    @container (width < 50em) {
+      .contact_content,
+      .contact_form_wrap {
+        grid-column: 1 / span 12;
+      }
+    }
+  </style>
+
+  <div class="contact_contain u-container">
+    <div class="contact_layout">
+      <div class="contact_content u-margin-trim" data-reveal>
+        <div class="contact_eyebrow_wrap">
+          <div class="contact_eyebrow_dot" aria-hidden="true"></div>
+          <div class="contact_eyebrow_number u-text-style-small">{t.eyebrowNumber}</div>
+          <div class="contact_eyebrow_label u-text-style-small">{t.eyebrowLabel}</div>
+        </div>
+        <div class="contact_title u-heading u-text-style-h2">
+          <h2>{t.title}</h2>
+        </div>
+        <div class="contact_text u-text u-text-style-main">
+          <p>{t.text}</p>
+        </div>
+
+        <a class="contact_phone_wrap" data-trigger="hover focus" href={phoneHref}>
+          <svg class="contact_phone_svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="contact_phone_path" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+          </svg>
+          <div class="contact_phone_text">{t.phoneDisplay}</div>
+        </a>
+
+        <a class="contact_email_wrap" data-trigger="hover focus" href={`mailto:${t.email}`}>
+          <div class="contact_email_text u-text-style-small">{t.email}</div>
+        </a>
+      </div>
+
+      <div class="contact_form_wrap" data-reveal style="--reveal-delay: 120ms">
+        <form class="contact_form" novalidate>
+          <div class="contact_field_wrap">
+            <label class="contact_field_label u-text-style-small" for="contact-name">{t.fields.name}</label>
+            <input class="contact_field_input" id="contact-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="contact_field_wrap">
+            <label class="contact_field_label u-text-style-small" for="contact-phone">{t.fields.phone}</label>
+            <input class="contact_field_input" id="contact-phone" name="phone" type="tel" autocomplete="tel" required />
+          </div>
+          <div class="contact_field_wrap">
+            <label class="contact_field_label u-text-style-small" for="contact-message">{t.fields.message}</label>
+            <textarea class="contact_field_input" id="contact-message" name="message" rows="4" data-contact-message></textarea>
+          </div>
+          <div class="contact_actions u-button-wrapper">
+            <button class="contact_submit_wrap" type="submit" data-trigger="hover focus">
+              {t.submit}
+            </button>
+          </div>
+        </form>
+
+        <div class="contact_confirm_wrap" data-contact-confirm>
+          <div class="contact_confirm_title u-text-style-h5">{t.confirmTitle}</div>
+          <div class="contact_confirm_text u-text-style-small">{t.confirmText}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".contact_wrap").forEach((component) => {
+        if (component.dataset.scriptInitialized) return;
+        component.dataset.scriptInitialized = "true";
+
+        const form = component.querySelector(".contact_form");
+        const confirmBlock = component.querySelector("[data-contact-confirm]");
+        if (!(form instanceof HTMLFormElement) || !(confirmBlock instanceof HTMLElement)) return;
+
+        // No backend wired up yet — this only shows a confirmation locally.
+        // Replace with a real submit (fetch to a form service or endpoint)
+        // once one is set up.
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+          form.hidden = true;
+          confirmBlock.classList.add("is-active");
+        });
+      });
+    });
+  </script>
+</section>

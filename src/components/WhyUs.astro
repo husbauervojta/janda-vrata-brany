@@ -1,0 +1,120 @@
+---
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].whyus;
+---
+
+<section id="why-us" class="whyus_wrap u-section u-theme-dark">
+  <style>
+    .whyus_content {
+      max-width: var(--max-width--small);
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: var(--_spacing---space--8);
+    }
+
+    .whyus_title {
+      max-width: 20ch;
+      margin-bottom: var(--_text-style---margin-bottom);
+    }
+
+    .whyus_text {
+      max-width: 42ch;
+      color: color-mix(in hsl, currentColor 80%, transparent);
+    }
+
+    .whyus_eyebrow_wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--_spacing---space--2);
+      margin-bottom: var(--_spacing---space--4);
+    }
+
+    .whyus_eyebrow_dot {
+      width: 0.4rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: var(--radius--round);
+      background-color: var(--_theme---accent);
+    }
+
+    .whyus_eyebrow_number {
+      color: var(--_theme---accent);
+      font-weight: var(--_typography---font--primary-bold);
+    }
+
+    .whyus_eyebrow_label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+
+    .whyus_grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--_spacing---space--5);
+    }
+
+    @container (width < 50em) {
+      .whyus_grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+    }
+
+    .whyus_card_wrap {
+      width: 100%;
+      padding: var(--_spacing---space--6);
+      background-color: var(--_theme---background-2);
+      color: var(--_theme---text);
+      border-radius: var(--radius--main);
+      border-style: solid;
+      border-width: var(--border-width--main);
+      border-color: color-mix(in hsl, var(--_theme---accent) calc(100% * var(--_trigger---on)), transparent calc(100% * var(--_trigger---off)));
+      transform: translateY(calc(-0.25rem * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .whyus_card_figure {
+      font-size: 2.5rem;
+      line-height: 1.1;
+      font-weight: var(--_typography---font--primary-bold);
+      letter-spacing: var(--_typography---letter-spacing--tight);
+      color: var(--_theme---accent);
+      margin-bottom: var(--_spacing---space--3);
+    }
+
+    .whyus_card_text {
+      color: color-mix(in hsl, currentColor 80%, transparent);
+    }
+  </style>
+
+  <div class="whyus_contain u-container">
+    <div class="whyus_content u-margin-trim u-alignment-center" data-reveal>
+      <div class="whyus_eyebrow_wrap">
+        <div class="whyus_eyebrow_dot" aria-hidden="true"></div>
+        <div class="whyus_eyebrow_number u-text-style-small">{t.eyebrowNumber}</div>
+        <div class="whyus_eyebrow_label u-text-style-small">{t.eyebrowLabel}</div>
+      </div>
+      <div class="whyus_title u-heading u-text-style-h2">
+        <h2>{t.title}</h2>
+      </div>
+      <div class="whyus_text u-text u-text-style-main">
+        <p>{t.text}</p>
+      </div>
+    </div>
+
+    <div class="whyus_grid">
+      {t.items.map((item, index) => (
+        <div class="whyus_card_wrap" data-trigger="hover" data-reveal style={`--reveal-delay: ${index * 90}ms`}>
+          <h3 class="whyus_card_figure">{item.figure}</h3>
+          <p class="whyus_card_text u-text-style-small">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

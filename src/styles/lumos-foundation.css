@@ -1,0 +1,450 @@
+/*
+  Lumos-style foundation for a standalone Astro project.
+  In Webflow, Lumos ships these tokens and utilities as part of the project.
+  Astro has no such host, so this file recreates the subset the components
+  in this project rely on: theme variables, spacing/typography scale,
+  responsive keyword variables, the trigger system, and core u- utilities.
+  Component files should never redefine anything from here.
+*/
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--_typography---font-family--primary);
+  font-weight: var(--_typography---font--primary-regular);
+  line-height: 1.5;
+  background-color: var(--_theme---background);
+  color: var(--_theme---text);
+}
+
+img,
+video {
+  object-fit: cover;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+[id] {
+  scroll-margin-top: var(--nav--height-total);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Scroll-reveal system: any element with [data-reveal] fades and lifts in
+   once it enters the viewport (see the observer script in Layout.astro).
+   Optional --reveal-delay custom property staggers grid items. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+
+[data-reveal].is-inview {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    transition: opacity 700ms ease, transform 700ms ease;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+svg {
+  display: block;
+}
+
+/* Site tokens */
+:root {
+  --nav--height-total: 4.5rem;
+  --site--margin: 1.5rem;
+  --site--gutter: 1.5rem;
+  --max-width--small: 50rem;
+  --max-width--main: 90rem;
+  --max-width--full: 100%;
+  --radius--small: 0.5rem;
+  --radius--main: 1rem;
+  --radius--round: 999rem;
+  --border-width--main: 0.0625rem;
+
+  --_spacing---space--1: 0.25rem;
+  --_spacing---space--2: 0.5rem;
+  --_spacing---space--3: 0.75rem;
+  --_spacing---space--4: 1rem;
+  --_spacing---space--5: 1.5rem;
+  --_spacing---space--6: 2rem;
+  --_spacing---space--7: 3rem;
+  --_spacing---space--8: 4rem;
+
+  --_spacing---section-space--none: 0rem;
+  --_spacing---section-space--small: 3rem;
+  --_spacing---section-space--main: 5rem;
+  --_spacing---section-space--large: 7rem;
+  --_spacing---section-space--page-top: 7rem;
+
+  --_typography---font-family--primary: "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --_typography---font--primary-regular: 400;
+  --_typography---font--primary-medium: 500;
+  --_typography---font--primary-bold: 700;
+  --_typography---font--primary-extrabold: 800;
+  --_typography---letter-spacing--tight: -0.03em;
+  --_text-style---margin-bottom: 1rem;
+
+  /* Responsive keyword variables: default (large container) values are the
+     var() fallbacks used in components, e.g. var(--flex-medium, grid).
+     Below 50em these are overridden inside .u-container. */
+  --_responsive---large: 1;
+  --_responsive---medium: 0;
+  --_responsive---small: 0;
+  --_responsive---xsmall: 0;
+
+  --_trigger---on: 0;
+  --_trigger---off: 1;
+}
+
+/* Trigger system: data-trigger="hover" / "focus" flip --_trigger---on/off.
+   This lives in the foundation only — components must never select
+   :hover/:focus directly, they read the variables instead. */
+[data-trigger~="hover"],
+[data-trigger~="focus"] {
+  --_trigger---on: 0;
+  --_trigger---off: 1;
+}
+
+@media (hover: hover) {
+  [data-trigger~="hover"]:hover {
+    --_trigger---on: 1;
+    --_trigger---off: 0;
+  }
+}
+
+[data-trigger~="hover"]:focus-visible,
+[data-trigger~="focus"]:focus-visible {
+  --_trigger---on: 1;
+  --_trigger---off: 0;
+}
+
+/* Theme: light (default) */
+:root,
+.u-theme-light {
+  --_theme---background: hsl(40, 20%, 98%);
+  --_theme---text: hsl(220, 15%, 12%);
+  --_theme---border: hsl(220, 15%, 85%);
+  --_theme---background-2: hsl(40, 18%, 93%);
+  --_theme---background-skeleton: hsl(220, 15%, 90%);
+
+  /* Brand accent: lime green. --accent-text sits on top of --accent,
+     --accent-glow is a ready-made color-mix for box-shadow glows. */
+  --_theme---accent: hsl(84, 85%, 45%);
+  --_theme---accent-hover: hsl(84, 90%, 55%);
+  --_theme---accent-text: hsl(220, 22%, 9%);
+  --_theme---accent-glow: color-mix(in hsl, var(--_theme---accent) 45%, transparent);
+
+  --_theme---text-link--text: hsl(220, 15%, 12%);
+  --_theme---text-link--border: hsl(220, 15%, 12%);
+  --_theme---text-link--text-hover: hsl(84, 70%, 30%);
+  --_theme---text-link--border-hover: hsl(84, 70%, 30%);
+
+  --_theme---button-primary--background: var(--_theme---accent);
+  --_theme---button-primary--text: var(--_theme---accent-text);
+  --_theme---button-primary--border: var(--_theme---accent);
+  --_theme---button-primary--background-hover: var(--_theme---accent-hover);
+  --_theme---button-primary--text-hover: var(--_theme---accent-text);
+  --_theme---button-primary--border-hover: var(--_theme---accent-hover);
+
+  --_theme---button-secondary--background: transparent;
+  --_theme---button-secondary--text: hsl(220, 15%, 12%);
+  --_theme---button-secondary--border: hsl(220, 15%, 12%);
+  --_theme---button-secondary--background-hover: hsl(220, 15%, 12%);
+  --_theme---button-secondary--text-hover: hsl(40, 20%, 98%);
+  --_theme---button-secondary--border-hover: hsl(220, 15%, 12%);
+}
+
+/* Theme: dark */
+.u-theme-dark {
+  --_theme---background: hsl(220, 20%, 9%);
+  --_theme---text: hsl(40, 20%, 96%);
+  --_theme---border: hsl(220, 15%, 24%);
+  --_theme---background-2: hsl(220, 17%, 15%);
+  --_theme---background-skeleton: hsl(220, 16%, 18%);
+
+  --_theme---accent: hsl(84, 90%, 58%);
+  --_theme---accent-hover: hsl(84, 95%, 70%);
+  --_theme---accent-text: hsl(220, 22%, 9%);
+  --_theme---accent-glow: color-mix(in hsl, var(--_theme---accent) 55%, transparent);
+
+  --_theme---text-link--text: hsl(40, 20%, 96%);
+  --_theme---text-link--border: hsl(40, 20%, 96%);
+  --_theme---text-link--text-hover: var(--_theme---accent);
+  --_theme---text-link--border-hover: var(--_theme---accent);
+
+  --_theme---button-primary--background: var(--_theme---accent);
+  --_theme---button-primary--text: var(--_theme---accent-text);
+  --_theme---button-primary--border: var(--_theme---accent);
+  --_theme---button-primary--background-hover: var(--_theme---accent-hover);
+  --_theme---button-primary--text-hover: var(--_theme---accent-text);
+  --_theme---button-primary--border-hover: var(--_theme---accent-hover);
+
+  --_theme---button-secondary--background: transparent;
+  --_theme---button-secondary--text: hsl(40, 20%, 96%);
+  --_theme---button-secondary--border: hsl(40, 20%, 96%);
+  --_theme---button-secondary--background-hover: hsl(40, 20%, 96%);
+  --_theme---button-secondary--text-hover: hsl(220, 20%, 9%);
+  --_theme---button-secondary--border-hover: hsl(40, 20%, 96%);
+}
+
+/* Theme: brand */
+.u-theme-brand {
+  --_theme---background: hsl(84, 80%, 52%);
+  --_theme---text: hsl(220, 22%, 9%);
+  --_theme---border: hsl(84, 60%, 38%);
+  --_theme---background-2: hsl(84, 70%, 46%);
+  --_theme---background-skeleton: hsl(84, 40%, 62%);
+
+  --_theme---accent: hsl(220, 22%, 9%);
+  --_theme---accent-hover: hsl(220, 22%, 20%);
+  --_theme---accent-text: hsl(84, 80%, 52%);
+  --_theme---accent-glow: color-mix(in hsl, var(--_theme---accent) 45%, transparent);
+
+  --_theme---text-link--text: hsl(220, 20%, 9%);
+  --_theme---text-link--border: hsl(220, 20%, 9%);
+  --_theme---text-link--text-hover: hsl(220, 22%, 25%);
+  --_theme---text-link--border-hover: hsl(220, 22%, 25%);
+
+  --_theme---button-primary--background: var(--_theme---accent);
+  --_theme---button-primary--text: var(--_theme---accent-text);
+  --_theme---button-primary--border: var(--_theme---accent);
+  --_theme---button-primary--background-hover: var(--_theme---accent-hover);
+  --_theme---button-primary--text-hover: var(--_theme---accent-text);
+  --_theme---button-primary--border-hover: var(--_theme---accent-hover);
+
+  --_theme---button-secondary--background: transparent;
+  --_theme---button-secondary--text: hsl(220, 20%, 9%);
+  --_theme---button-secondary--border: hsl(220, 20%, 9%);
+  --_theme---button-secondary--background-hover: hsl(220, 20%, 9%);
+  --_theme---button-secondary--text-hover: hsl(84, 80%, 52%);
+  --_theme---button-secondary--border-hover: hsl(220, 20%, 9%);
+}
+
+/* Layout utilities */
+.u-section {
+  display: flex;
+  flex-flow: column;
+  background-color: var(--_theme---background);
+  color: var(--_theme---text);
+  padding-top: var(--_spacing---section-space--main);
+  padding-bottom: var(--_spacing---section-space--main);
+}
+
+.u-container {
+  max-width: var(--max-width--main);
+  width: calc(100% - var(--site--margin) * 2);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-flow: column;
+  container-type: inline-size;
+  gap: var(--_spacing---space--8);
+}
+
+/* Responsive keyword variables, redefined per container width tier.
+   Only "medium" is implemented — extend with small/xsmall the same way
+   if a component needs a finer breakpoint. */
+@container (width < 50em) {
+  .u-container {
+    --_responsive---large: 0;
+    --_responsive---medium: 1;
+    --flex-medium: flex;
+    --none-medium: none;
+    --column-medium: column;
+    --row-medium: row;
+    --start-medium: flex-start;
+    --center-medium: center;
+    --end-medium: flex-end;
+    --unset-medium: unset;
+    --relative-medium: relative;
+  }
+}
+
+.u-heading,
+.u-text {
+  display: flex;
+  min-width: 100%;
+  flex-direction: column;
+  align-items: inherit;
+  justify-content: inherit;
+}
+
+.u-heading > *,
+.u-text > * {
+  max-width: inherit;
+}
+
+.u-margin-trim > *:first-child {
+  margin-top: 0;
+}
+
+.u-margin-trim > *:last-child {
+  margin-bottom: 0;
+}
+
+.u-alignment-center {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.u-button-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(--_spacing---space--3);
+  justify-content: inherit;
+  align-items: inherit;
+}
+
+.u-display-none {
+  display: none;
+}
+
+.u-sr-only {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: -0.0625rem;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Typography */
+.u-text-style-display {
+  font-size: 4rem;
+  line-height: 1.05;
+  font-weight: var(--_typography---font--primary-bold);
+  letter-spacing: var(--_typography---letter-spacing--tight);
+}
+
+.u-text-style-h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: var(--_typography---font--primary-bold);
+  letter-spacing: var(--_typography---letter-spacing--tight);
+}
+
+.u-text-style-h2 {
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: var(--_typography---font--primary-bold);
+  letter-spacing: var(--_typography---letter-spacing--tight);
+}
+
+.u-text-style-h3 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: var(--_typography---font--primary-medium);
+}
+
+.u-text-style-h4 {
+  font-size: 1.375rem;
+  line-height: 1.25;
+  font-weight: var(--_typography---font--primary-medium);
+}
+
+.u-text-style-h5 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: var(--_typography---font--primary-medium);
+}
+
+.u-text-style-h6 {
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: var(--_typography---font--primary-medium);
+}
+
+.u-text-style-large {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: var(--_typography---font--primary-regular);
+}
+
+.u-text-style-main {
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: var(--_typography---font--primary-regular);
+}
+
+.u-text-style-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: var(--_typography---font--primary-regular);
+}
+
+@container (width < 50em) {
+  .u-text-style-display {
+    font-size: 2.75rem;
+  }
+
+  .u-text-style-h1 {
+    font-size: 2.25rem;
+  }
+
+  .u-text-style-h2 {
+    font-size: 1.75rem;
+  }
+}

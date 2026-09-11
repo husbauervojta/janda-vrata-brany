@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Marquee from "../components/Marquee.astro";
+import Services from "../components/Services.astro";
+import WhyUs from "../components/WhyUs.astro";
+import Gallery from "../components/Gallery.astro";
+import Reviews from "../components/Reviews.astro";
+import Configurator from "../components/Configurator.astro";
+import Contact from "../components/Contact.astro";
+
+const lang = "cs" as const;
+---
+
+<Layout lang={lang}>
+  <Hero lang={lang} />
+  <Marquee lang={lang} />
+  <Services lang={lang} />
+  <WhyUs lang={lang} />
+  <Gallery lang={lang} />
+  <Reviews lang={lang} />
+  <Configurator lang={lang} />
+  <Contact lang={lang} />
+</Layout>

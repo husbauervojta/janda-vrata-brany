@@ -1,0 +1,297 @@
+---
+// Placeholder entries: swap each label for a real project photo (<img>)
+// once Petr sends completed-job photos. Structure below already supports it.
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].gallery;
+---
+
+<section id="gallery" class="gallery_wrap u-section u-theme-light">
+  <style>
+    .gallery_content {
+      max-width: var(--max-width--small);
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: var(--_spacing---space--8);
+    }
+
+    .gallery_title {
+      max-width: 20ch;
+      margin-bottom: var(--_text-style---margin-bottom);
+    }
+
+    .gallery_text {
+      max-width: 42ch;
+      color: color-mix(in hsl, currentColor 75%, transparent);
+    }
+
+    .gallery_eyebrow_wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--_spacing---space--2);
+      margin-bottom: var(--_spacing---space--4);
+    }
+
+    .gallery_eyebrow_dot {
+      width: 0.4rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: var(--radius--round);
+      background-color: var(--_theme---accent);
+    }
+
+    .gallery_eyebrow_number {
+      color: var(--_theme---accent);
+      font-weight: var(--_typography---font--primary-bold);
+    }
+
+    .gallery_eyebrow_label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+
+    .gallery_grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--_spacing---space--4);
+    }
+
+    @container (width < 50em) {
+      .gallery_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .gallery_item_wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--_spacing---space--3);
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      padding: var(--_spacing---space--4);
+      background-color: var(--_theme---background-skeleton);
+      color: var(--_theme---text);
+      border-radius: var(--radius--main);
+      transform: scale(calc(1 - 0.02 * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .gallery_item_svg {
+      width: 2.25rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      color: color-mix(in hsl, currentColor 55%, transparent);
+      fill: none;
+    }
+
+    .gallery_item_path {
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .gallery_item_label {
+      max-width: 16ch;
+      text-align: center;
+      color: color-mix(in hsl, currentColor 65%, transparent);
+    }
+
+    .gallery_lightbox_wrap {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery_lightbox_wrap.is-active {
+      display: flex;
+    }
+
+    .gallery_lightbox_backdrop {
+      position: absolute;
+      inset: 0;
+      background-color: color-mix(in hsl, var(--_theme---text) 70%, transparent);
+    }
+
+    .gallery_lightbox_panel_wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--_spacing---space--4);
+      width: calc(100% - var(--site--margin) * 2);
+      max-width: 40rem;
+      padding: var(--_spacing---space--8);
+      background-color: var(--_theme---background);
+      color: var(--_theme---text);
+      border-radius: var(--radius--main);
+      opacity: 0;
+      transform: scale(0.94);
+    }
+
+    .gallery_lightbox_wrap.is-active .gallery_lightbox_panel_wrap {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .gallery_lightbox_panel_wrap {
+        transition: opacity 250ms ease, transform 250ms ease;
+      }
+    }
+
+    .gallery_lightbox_close_wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: var(--_spacing---space--3);
+      right: var(--_spacing---space--3);
+      width: 2.25rem;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius--round);
+      background-color: color-mix(in hsl, var(--_theme---background-2) calc(100% * var(--_trigger---off)), var(--_theme---border) calc(100% * var(--_trigger---on)));
+      transition: all 300ms;
+    }
+
+    .gallery_lightbox_close_svg {
+      width: 1rem;
+      aspect-ratio: 1 / 1;
+      fill: none;
+    }
+
+    .gallery_lightbox_close_path {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .gallery_lightbox_svg {
+      width: 4rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      color: color-mix(in hsl, currentColor 55%, transparent);
+      fill: none;
+    }
+
+    .gallery_lightbox_path {
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .gallery_lightbox_label {
+      text-align: center;
+      color: color-mix(in hsl, currentColor 70%, transparent);
+    }
+  </style>
+
+  <div class="gallery_contain u-container">
+    <div class="gallery_content u-margin-trim u-alignment-center" data-reveal>
+      <div class="gallery_eyebrow_wrap">
+        <div class="gallery_eyebrow_dot" aria-hidden="true"></div>
+        <div class="gallery_eyebrow_number u-text-style-small">{t.eyebrowNumber}</div>
+        <div class="gallery_eyebrow_label u-text-style-small">{t.eyebrowLabel}</div>
+      </div>
+      <div class="gallery_title u-heading u-text-style-h2">
+        <h2>{t.title}</h2>
+      </div>
+      <div class="gallery_text u-text u-text-style-main">
+        <p>{t.text}</p>
+      </div>
+    </div>
+
+    <div class="gallery_grid">
+      {t.items.map((item, index) => (
+        <button
+          class="gallery_item_wrap"
+          type="button"
+          data-trigger="hover focus"
+          data-reveal
+          style={`--reveal-delay: ${(index % 4) * 80}ms`}
+          data-gallery-open
+          data-gallery-label={item.label}
+        >
+          <svg class="gallery_item_svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="gallery_item_path" d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" />
+            <path class="gallery_item_path" d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+          </svg>
+          <div class="gallery_item_label u-text-style-small">{item.label}</div>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="gallery_lightbox_wrap" data-gallery-lightbox aria-hidden="true">
+    <div class="gallery_lightbox_backdrop" data-gallery-close></div>
+    <div class="gallery_lightbox_panel_wrap" role="dialog" aria-modal="true" aria-label={t.lightboxAria}>
+      <button class="gallery_lightbox_close_wrap" type="button" data-trigger="hover focus" data-gallery-close aria-label={t.closeAria}>
+        <svg class="gallery_lightbox_close_svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path class="gallery_lightbox_close_path" d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <svg class="gallery_lightbox_svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="gallery_lightbox_path" d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" />
+        <path class="gallery_lightbox_path" d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+      </svg>
+      <div class="gallery_lightbox_label u-text-style-main" data-gallery-label></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".gallery_wrap").forEach((component) => {
+        if (component.dataset.scriptInitialized) return;
+        component.dataset.scriptInitialized = "true";
+
+        const lightbox = component.querySelector(".gallery_lightbox_wrap");
+        const labelEl = component.querySelector(".gallery_lightbox_label");
+        if (!(lightbox instanceof HTMLElement) || !(labelEl instanceof HTMLElement)) return;
+
+        let lastFocused = null;
+
+        const openLightbox = (label, trigger) => {
+          lastFocused = trigger;
+          labelEl.textContent = label;
+          lightbox.classList.add("is-active");
+          lightbox.setAttribute("aria-hidden", "false");
+          const closeButton = component.querySelector(".gallery_lightbox_close_wrap");
+          if (closeButton instanceof HTMLElement) closeButton.focus();
+        };
+
+        const closeLightbox = () => {
+          lightbox.classList.remove("is-active");
+          lightbox.setAttribute("aria-hidden", "true");
+          if (lastFocused instanceof HTMLElement) lastFocused.focus();
+        };
+
+        component.querySelectorAll(".gallery_item_wrap").forEach((trigger) => {
+          if (!(trigger instanceof HTMLElement)) return;
+          trigger.addEventListener("click", () => {
+            openLightbox(trigger.dataset.galleryLabel ?? "", trigger);
+          });
+        });
+
+        component.querySelectorAll("[data-gallery-close]").forEach((closer) => {
+          closer.addEventListener("click", closeLightbox);
+        });
+
+        lightbox.addEventListener("keydown", (event) => {
+          if (event instanceof KeyboardEvent && event.key === "Escape") closeLightbox();
+        });
+      });
+    });
+  </script>
+</section>

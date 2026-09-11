@@ -1,0 +1,255 @@
+---
+import { content, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang].nav;
+---
+
+<header class="nav_wrap u-theme-dark">
+  <style>
+    .nav_wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      height: var(--nav--height-total);
+      display: flex;
+      align-items: center;
+      color: var(--_theme---text);
+      background-color: color-mix(in hsl, var(--_theme---background) 85%, transparent);
+      backdrop-filter: blur(0.75rem);
+      border-bottom-style: solid;
+      border-bottom-width: var(--border-width--main);
+      border-color: var(--_theme---border);
+    }
+
+    .nav_layout {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--_spacing---space--5);
+    }
+
+    .nav_logo_wrap {
+      display: flex;
+      flex-shrink: 0;
+    }
+
+    .nav_logo_svg {
+      width: 2rem;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      fill: none;
+    }
+
+    .nav_logo_path {
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav_menu_wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--_spacing---space--6);
+      margin-left: auto;
+    }
+
+    .nav_menu_link {
+      color: color-mix(in hsl, var(--_theme---text-link--text) calc(100% * var(--_trigger---off)), var(--_theme---text-link--text-hover) calc(100% * var(--_trigger---on)));
+      font-weight: var(--_typography---font--primary-medium);
+      padding-bottom: 0.25rem;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: calc(100% * var(--_trigger---on)) var(--border-width--main);
+      transition: color 300ms, background-size 300ms;
+    }
+
+    .nav_lang_wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--_spacing---space--1);
+      flex-shrink: 0;
+      padding: var(--_spacing---space--1);
+      margin-left: var(--_spacing---space--5);
+      background-color: var(--_theme---background-2);
+      border-radius: var(--radius--round);
+    }
+
+    .nav_lang_option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--_spacing---space--1) var(--_spacing---space--3);
+      border-radius: var(--radius--round);
+      color: var(--_theme---text);
+      font-weight: var(--_typography---font--primary-medium);
+      transition: all 300ms;
+    }
+
+    .nav_lang_option.is-active {
+      background-color: var(--_theme---accent);
+      color: var(--_theme---accent-text);
+      font-weight: var(--_typography---font--primary-medium);
+    }
+
+    .nav_cta_wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: fit-content;
+      white-space: nowrap;
+      padding: var(--_spacing---space--2) var(--_spacing---space--4);
+      margin-left: var(--_spacing---space--3);
+      border-radius: var(--radius--small);
+      border-style: solid;
+      border-width: var(--border-width--main);
+      font-weight: var(--_typography---font--primary-medium);
+      background-color: color-mix(in hsl, var(--_theme---button-primary--background) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--background-hover) calc(100% * var(--_trigger---off)));
+      color: color-mix(in hsl, var(--_theme---button-primary--text) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--text-hover) calc(100% * var(--_trigger---off)));
+      border-color: color-mix(in hsl, var(--_theme---button-primary--border) calc(100% * var(--_trigger---on)), var(--_theme---button-primary--border-hover) calc(100% * var(--_trigger---off)));
+      transition: all 300ms;
+    }
+
+    .nav_toggle_wrap {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 2.5rem;
+      aspect-ratio: 1 / 1;
+      margin-left: var(--_spacing---space--3);
+      border-radius: var(--radius--small);
+      background-color: color-mix(in hsl, var(--_theme---background-2) calc(100% * var(--_trigger---off)), var(--_theme---border) calc(100% * var(--_trigger---on)));
+      transition: background-color 300ms;
+    }
+
+    .nav_toggle_svg {
+      width: 1.25rem;
+      aspect-ratio: 1 / 1;
+      fill: none;
+    }
+
+    .nav_toggle_path {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    @container (width < 60em) {
+      .nav_menu_wrap {
+        display: none;
+        position: absolute;
+        top: calc(var(--nav--height-total) - var(--_spacing---space--2));
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--_spacing---space--1);
+        padding: var(--_spacing---space--4);
+        background-color: var(--_theme---background);
+        border-bottom-style: solid;
+        border-bottom-width: var(--border-width--main);
+        border-color: var(--_theme---border);
+      }
+
+      .nav_menu_wrap.is-active {
+        display: flex;
+      }
+
+      .nav_menu_link {
+        width: 100%;
+        padding: var(--_spacing---space--3) 0;
+      }
+
+      .nav_cta_wrap {
+        display: none;
+      }
+
+      .nav_toggle_wrap {
+        display: flex;
+      }
+    }
+  </style>
+
+  <div class="nav_contain u-container">
+    <div class="nav_layout">
+      <a class="nav_logo_wrap" href="#top" aria-label={t.logoAria}>
+        <svg class="nav_logo_svg" viewBox="0 0 100 100" aria-hidden="true">
+          <path class="nav_logo_path" d="M50 4 L84 28 L84 68 L50 96 L16 68 L16 28 Z" />
+          <path class="nav_logo_path" d="M32 38h36M32 46h36M32 54h36" />
+          <path class="nav_logo_path" d="M34 60v22M42 60v22M58 60v22M66 60v22" />
+        </svg>
+      </a>
+
+      <nav class="nav_menu_wrap" aria-label={t.logoAria} data-nav-menu>
+        {t.links.map((link) => (
+          <a class="nav_menu_link u-text-style-small" href={link.href} data-trigger="hover focus" data-nav-link>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="nav_lang_wrap">
+        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "cs" }]} href="/">
+          CS
+        </a>
+        <a class:list={["nav_lang_option", "u-text-style-small", { "is-active": lang === "en" }]} href="/en/">
+          EN
+        </a>
+      </div>
+
+      <a class="nav_cta_wrap u-text-style-small" data-trigger="hover focus" href="#quote">
+        {t.cta} →
+      </a>
+
+      <button
+        class="nav_toggle_wrap"
+        type="button"
+        aria-expanded="false"
+        aria-label={t.toggleAria}
+        data-nav-toggle
+      >
+        <svg class="nav_toggle_svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path class="nav_toggle_path" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".nav_wrap").forEach((component) => {
+        if (component.dataset.scriptInitialized) return;
+        component.dataset.scriptInitialized = "true";
+
+        const toggle = component.querySelector("[data-nav-toggle]");
+        const menu = component.querySelector("[data-nav-menu]");
+        if (!(toggle instanceof HTMLElement) || !(menu instanceof HTMLElement)) return;
+
+        const closeMenu = () => {
+          menu.classList.remove("is-active");
+          toggle.setAttribute("aria-expanded", "false");
+        };
+
+        toggle.addEventListener("click", () => {
+          const isActive = menu.classList.toggle("is-active");
+          toggle.setAttribute("aria-expanded", String(isActive));
+        });
+
+        component.querySelectorAll("[data-nav-link]").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+      });
+    });
+  </script>
+</header>
